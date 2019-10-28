@@ -1,18 +1,13 @@
-# Hello, world!
-#
-# This is an example function named 'hello' 
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Build and Reload Package:  'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
+#########
+# FRED package
+#########
 
-hello <- function() {
-  print("Hello, world!")
-}
+library(devtools)
+fred1 <- read.csv("C:/Users/Shaflet/Documents/school/geol_590/final_proj/FRED_2.1_20180824_for_r.csv")
+
+use_data(fred1)
+
+Authors@R: as.person(c(
+  "Shafer Powell <apowel19@vols.utk.edu> [aut, cre]",
+  "Thomas Geissberger <tgeissbe@vols.utk.edu> [aut, cre]"
+))
