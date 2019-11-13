@@ -5,16 +5,19 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "927675821",
+    "hash" : "0",
     "id" : "E3BB4405",
     "lastKnownWriteTime" : 1572012589,
     "last_content_update" : 1572012595948,
     "path" : "~/school/geol_590/final_proj/FRED1pkg/R/hello.R",
     "project_path" : "R/hello.R",
     "properties" : {
-        "cursorPosition" : "13,0",
+        "cursorPosition" : "2,9",
         "scrollLine" : "0"
     },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
     "relative_order" : 1,
     "source_on_save" : false,
     "source_window" : "",
