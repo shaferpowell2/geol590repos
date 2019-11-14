@@ -15,21 +15,24 @@ ui <- fluidPage(
            selectInput("bgpart",
                        "Belowground part",
                        c("All",
-                         unique(as.character(fred1$Belowground.part))))
+                         sort(unique(as.character(fred1$Belowground.part)))))
     ),
     column(4,
            selectInput("family",
                        "Plant family:",
                        c("All",
-                         unique(as.character(fred1$Plant.taxonomy_Family_TPL))))
+                         sort(unique(as.character(fred1$Plant.taxonomy_Family_TPL)))))
     ),
     column(4,
            selectInput("pot",
                        "Growth environment:",
                        c("All",
-                         unique(as.character(fred1$Notes_In.situ..pot..or.hydroponic))))
+                         sort(unique(as.character(fred1$Notes_In.situ..pot..or.hydroponic))))),
     )
   ),
+  # Add download button
+  downloadButton("downloadData", "Download"),
+
   # Create a new row for the table.
   DT::dataTableOutput("table")
 )
@@ -50,6 +53,16 @@ server <- function(input, output) {
     }
     data
   }))
+
+  # Downloadable csv of selected dataset
+  output$dataset <- downloadHandler(
+    filename = function() {
+      paste(output$data, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(table(), file, row.names = FALSE)
+    }
+  )
 
 }
 
