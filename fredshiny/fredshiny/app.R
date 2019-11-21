@@ -82,9 +82,7 @@ server <- function(input, output) {
 
   # Downloadable csv of selected dataset
   output$downloadData <- downloadHandler(
-    filename = function() {
-      paste(input$dataset, ".csv", sep = "")
-    },
+    filename = "fred1_selected_download.csv",
     content = function(file) {
       write.csv(datasetInput(), file, row.names = FALSE)
     }
