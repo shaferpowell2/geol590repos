@@ -9,7 +9,6 @@ library(tidyverse) #so that pipe function works
 #Subset FRED for simpler display
 set.seed(50)
 fred1subset <- fred1 %>%
-  sample_n(1000) %>%
   select(Belowground.part,Plant.taxonomy_Family_TPL, Accepted.genus_TPL, Accepted.species_TPL, Notes_In.situ..pot..or.hydroponic, Root.diameter, Belowground.biomass.per.ground.area, Root.length.density..RLD._Root.length.per.ground.area, Root.C.N.ratio)
 
 
@@ -41,14 +40,14 @@ ui <- fluidPage(
   downloadButton("downloadData", "Download"),
 
   # Create a new row for the table.
-  tableOutput("table")
+  DT::dataTableOutput("table")
 )
 
 server <- function(input, output) {
 
   # Filter data based on selections
-  output$table <- renderTable(({
-    #stop("Unable to render table")
+  output$table <- DT::renderDataTable(DT::datatable({
+    #renderDataTable is used instead of renderTable because the former vertically separates the table into manageable pages.
     data <- fred1subset
     if (input$bgpart != "All") {
       data <- data[data$Belowground.part == input$bgpart,]
@@ -61,6 +60,7 @@ server <- function(input, output) {
     }
     data
   }))
+
 
   #Create output that is not in datatable form and can therefore be exported as a CSV
 
