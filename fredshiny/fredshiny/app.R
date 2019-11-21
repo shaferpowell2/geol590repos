@@ -6,11 +6,11 @@ library(shiny)
 library(FRED1pkg) # package containing the FRED dataset. Downloadable from Github at https://github.com/shaferpowell2/geol590repos/tree/master/FRED1pkg
 library(tidyverse) #so that pipe function works
 
-#Subset FRED for displayed datatable
+#Subset FRED for simpler display
 set.seed(50)
-fred1 <- fred1 %>%
+fred1subset <- fred1 %>%
   sample_n(1000) %>%
-  select(Belowground.part,Plant.taxonomy_Family_TPL,Notes_In.situ..pot..or.hydroponic)
+  select(Belowground.part,Plant.taxonomy_Family_TPL, Accepted.genus_TPL, Accepted.species_TPL, Notes_In.situ..pot..or.hydroponic, Root.diameter, Belowground.biomass.per.ground.area, Root.length.density..RLD._Root.length.per.ground.area, Root.C.N.ratio)
 
 
 ui <- fluidPage(
@@ -49,7 +49,7 @@ server <- function(input, output) {
   # Filter data based on selections
   output$table <- renderTable(({
     #stop("Unable to render table")
-    data <- fred1
+    data <- fred1subset
     if (input$bgpart != "All") {
       data <- data[data$Belowground.part == input$bgpart,]
     }
