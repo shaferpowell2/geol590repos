@@ -3,8 +3,15 @@
 #########
 
 library(shiny)
-library(FRED1pkg) # package containing the FRED dataset
-library(ggplot2)
+library(FRED1pkg) # package containing the FRED dataset. Downloadable from Github at https://github.com/shaferpowell2/geol590repos/tree/master/FRED1pkg
+library(tidyverse) #so that pipe function works
+
+#Subset FRED for displayed datatable
+set.seed(50)
+fred1 <- fred1 %>%
+  sample_n(1000) %>%
+  select(Belowground.part,Plant.taxonomy_Family_TPL,Notes_In.situ..pot..or.hydroponic)
+
 
 ui <- fluidPage(
   titlePanel("FRED 1 data explorer"),
@@ -34,13 +41,14 @@ ui <- fluidPage(
   downloadButton("downloadData", "Download"),
 
   # Create a new row for the table.
-  DT::dataTableOutput("table")
+  tableOutput("table")
 )
 
 server <- function(input, output) {
 
   # Filter data based on selections
-  output$table <- DT::renderDataTable(DT::datatable({
+  output$table <- renderTable(({
+    #stop("Unable to render table")
     data <- fred1
     if (input$bgpart != "All") {
       data <- data[data$Belowground.part == input$bgpart,]
@@ -54,13 +62,31 @@ server <- function(input, output) {
     data
   }))
 
+  #Create output that is not in datatable form and can therefore be exported as a CSV
+
+    datasetInput <- reactive({
+      data2 <- FRED1pkg::fred1
+    if (input$bgpart != "All") {
+      data2 <- data2[data2$Belowground.part == input$bgpart,]
+    }
+    if (input$family != "All") {
+      data2 <- data2[data2$Plant.taxonomy_Family_TPL == input$family,]
+    }
+    if (input$pot != "All") {
+      data2 <- data2[data2$Notes_In.situ..pot..or.hydroponic == input$pot,]
+    }
+      data2
+    })
+
+
+
   # Downloadable csv of selected dataset
-  output$dataset <- downloadHandler(
+  output$downloadData <- downloadHandler(
     filename = function() {
-      paste(output$data, ".csv", sep = "")
+      paste(input$dataset, ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(table(), file, row.names = FALSE)
+      write.csv(datasetInput(), file, row.names = FALSE)
     }
   )
 
