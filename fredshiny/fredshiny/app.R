@@ -13,7 +13,11 @@ fred1subset <- fred1 %>%
 
 
 ui <- fluidPage(
-  titlePanel("FRED 1 data explorer"),
+  navbarPage("FRED 1",
+
+############# Download/table tab
+
+             tabPanel("Data Download",
 
   # Create a new Row in the UI for selectInputs
   fluidRow(
@@ -41,9 +45,26 @@ ui <- fluidPage(
 
   # Create a new row for the table.
   DT::dataTableOutput("table")
-)
+),
+
+######### Interactive graph tab
+
+tabPanel("Interactive Graph",
+         # Application title
+         titlePanel('FRED 1 plot'),
+
+         # Sidebar with 2 select inputs and a numeric input
+         sidebarPanel(
+           selectInput('xCol', 'X', names(fred1)),
+           selectInput('yCol', 'Y', names(fred1))),
+
+         # Shows the plot
+         mainPanel(plotOutput('plot'))
+)))
 
 server <- function(input, output) {
+
+############# Download/table tab
 
   # Filter data based on selections
   output$table <- DT::renderDataTable(DT::datatable({
@@ -88,6 +109,14 @@ server <- function(input, output) {
     }
   )
 
+############# Interactive graph tab
+
+  # Get the data from the variables declared on the ui.R file
+  df <- reactive({fred1[, c(input$xCol, input$yCol)]})
+
+  # Create the plot
+  output$plot <- renderPlot({plot(df(), pch = 20, cex = 3, col = "blue",
+                                  main = "FRED 1 plot")})
 }
 
 
