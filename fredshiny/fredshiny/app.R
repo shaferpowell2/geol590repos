@@ -11,6 +11,9 @@ set.seed(50)
 fred1subset <- fred1 %>%
   select(Belowground.part,Plant.taxonomy_Family_TPL, Accepted.genus_TPL, Accepted.species_TPL, Notes_In.situ..pot..or.hydroponic, Root.diameter, Belowground.biomass.per.ground.area, Root.length.density..RLD._Root.length.per.ground.area, Root.C.N.ratio)
 
+#Create separate FRED subset for graph
+fred1graph <- fred1 %>%
+  select(Root.order,Root.diameter, Latitude_main, Root.C.N.ratio, Root.decomposition_Annual.k.constant, Root.median.lifespan_d, Belowground.biomass.per.ground.area,Root.tissue.density..RTD.)
 
 ui <- fluidPage(
   navbarPage("FRED 1",
@@ -55,8 +58,9 @@ tabPanel("Interactive Graph",
 
          # Sidebar with 2 select inputs and a numeric input
          sidebarPanel(
-           selectInput('xCol', 'X', names(fred1)),
-           selectInput('yCol', 'Y', names(fred1))),
+           selectInput('xCol', 'X', c("Root.order","Root.diameter", "Latitude_main")),
+           selectInput('yCol', 'Y', c("Root.C.N.ratio", "Root.tissue.density..RTD.", "Root.median.lifespan_d", "Belowground.biomass.per.ground.area"))
+           ),
 
          # Shows the plot
          mainPanel(plotOutput('plot'))
@@ -112,7 +116,7 @@ server <- function(input, output) {
 ############# Interactive graph tab
 
   # Get the data from the variables declared on the ui.R file
-  df <- reactive({fred1[, c(input$xCol, input$yCol)]})
+  df <- reactive({fred1graph[, c(input$xCol, input$yCol)]})
 
   # Create the plot
   output$plot <- renderPlot({plot(df(), pch = 20, cex = 3, col = "blue",
