@@ -115,12 +115,12 @@ server <- function(input, output) {
 
 ############# Interactive graph tab
 
-  # Get the data from the variables declared on the ui.R file
-  df <- reactive({fred1graph[, c(input$xCol, input$yCol)]})
-
   # Create the plot
-  output$plot <- renderPlot({plot(df(), pch = 20, cex = 3, col = "blue",
-                                  main = "FRED 1 plot")})
+  output$plot <- renderPlot({
+    ggplot(data = fred1graph) +
+      aes_string(x = input$xCol, y = input$yCol) +
+      geom_point()
+  })
 }
 
 
