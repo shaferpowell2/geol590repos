@@ -119,7 +119,7 @@ server <- function(input, output) {
   output$plot <- renderPlot({
     ggplot(data = fred1graph) +
       aes_string(x = input$xCol, y = input$yCol) +
-      geom_point()
+      geom_point(position = "jitter")
   })
 }
 
