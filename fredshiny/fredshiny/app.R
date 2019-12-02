@@ -7,7 +7,6 @@ library(FRED1pkg) # package containing the FRED dataset. Downloadable from Githu
 library(tidyverse) #so that pipe function works
 
 #Subset FRED for simpler display
-set.seed(50)
 fred1subset <- fred1 %>%
   select(Belowground.part,Plant.taxonomy_Family_TPL, Accepted.genus_TPL, Accepted.species_TPL, Notes_In.situ..pot..or.hydroponic, Root.diameter, Belowground.biomass.per.ground.area, Root.length.density..RLD._Root.length.per.ground.area, Root.C.N.ratio)
 
