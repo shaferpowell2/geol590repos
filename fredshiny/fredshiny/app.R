@@ -53,7 +53,7 @@ ui <- fluidPage(
 
 tabPanel("Interactive Graph",
          # Application title
-         titlePanel('FRED 1 plot'),
+         titlePanel('FRED 1 plot (X axis jittered)'),
 
          # Sidebar with 2 select inputs and a numeric input
          sidebarPanel(
