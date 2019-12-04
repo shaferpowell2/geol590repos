@@ -4,7 +4,7 @@
 
 library(shiny)
 library(FRED1pkg) # package containing the FRED dataset. Downloadable from Github at https://github.com/shaferpowell2/geol590repos/tree/master/FRED1pkg
-library(tidyverse) #so that pipe function works
+library(tidyverse) #so that pipe function and ggplot work
 
 #Subset FRED for simpler display
 fred1subset <- fred1 %>%
@@ -118,7 +118,7 @@ server <- function(input, output) {
   output$plot <- renderPlot({
     ggplot(data = fred1graph) +
       aes_string(x = input$xCol, y = input$yCol) +
-      geom_point(position = "jitter")
+      geom_point(position = position_jitter(height = 0))
   })
 }
 
